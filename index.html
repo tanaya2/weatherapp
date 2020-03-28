@@ -2,20 +2,40 @@
  
 <html> 
     <head>
-            <link rel="stylesheet" type="text/css" href="styles.css">
-            <script type="text/javascript" src="script.js"></script>
-    
-            <title>Weather App</title>
-    </head>
-    
-    <body>
-        
-        <div id="currently"></div>
-        <div >
-            <table id="forecast">
-                <tr><th>date</th><th>current temperature</th><th>high</th><th>low</th><th>summary</th><th>feels like</th><th>wind</th><th>rain chance</th></tr>
-            </table>
-        </div>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 
-    </body>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="script.js"></script>
+        
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <link rel="icon" type="image/png" href="assets/images/suncloud.png">
+    <title>Weather App</title>
+
+</head>
+    
+<body>
+<div class="icons"></div>
+    
+    <div id="currently"></div>
+    <div>
+        
+        <table id="forecast">
+            <tr>
+                <th></th>
+                <th>DATE</th>
+                <th>HIGH</th>
+                <th>LOW</th>
+                <th>SUMMARY</th>
+                <th>WIND</th>
+                <th>RAIN CHANCE</th>
+            </tr>
+        </table>
+    </div>
+    
+    
+
+</body>
+    
 </html>
