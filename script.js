@@ -83,60 +83,25 @@ function getWeatherData(currentLocation) {
     console.log(url);
 
     $.getJSON(url, function (data) {
+        console.log(data);
+
 
         //create new date object
         var now = new Date(data.currently.time * 1000);
-        //get date and display
-        var time = $("<p>").text("At: " + now.toDateString() + ", " + now.toTimeString());
-        //add to body
-        //$("#currently").append(time);
-        
-        //get summary
-       // var summary = $("<h2>").html("" + data.currently.summary);
-        //$("#currently").append(summary);
-        
-        var iconImage = ''; //set empty image string
-        var cIcon = data.currently.icon; //shortcut for data
 
-        //icon image files
-        var sunIcon = 'assets/images/sun.png';
-        var cloudSunIcon = 'assets/images/suncloud.png';
-        var cloudMoonIcon = 'assets/images/cloudnight.png';
-        var moonIcon = 'assets/images/night.png';
-        var rainIcon = 'assets/images/rain.png';
-        var windyIcon = 'assets/images/wind.png';
-        var cloudyIcon = 'assets/images/cloud.png';
-        var coldIcon = 'assets/images/cold.png';//display the right icon
+        var time = $("<h1>").text("At: " + moment(date).format('dddd, Do MMMM') + ", " + moment(date).format('h:mm a'));
 
-        //mega if statement 
-        // there are other more efficient ways to do this... but you can see the logic here. 
-        if (cIcon === 'clear-day') {
-            iconImage = sunIcon;				
-        } else if (cIcon === 'cloudy') {
-            iconImage = cloudyIcon;		
-        } else if (cIcon === 'rain') {
-            iconImage = rainIcon;
-        } else if (cIcon === 'clear-night') {
-            iconImage = moonIcon;
-        } else if (cIcon === 'partly-cloudy-night') {
-            iconImage = cloudMoonIcon;
-        } else if (cIcon === 'partly-cloudy-day') {
-            iconImage = cloudSunIcon;
-        } else if (cIcon === 'snow') {
-            iconImage = coldIcon;
-        } else if (cIcon === 'wind') {
-            iconImage = windyIcon;
-        }
-        $('.icons').html('<img src="' + iconImage + '">');
-           
+        //add icon image to HTML
+        //set variable to be a function
+        var iconImage = returnIcon(data.currently.icon);
+        var currentIcon = $('<div>').html('<img src="' + iconImage + '">').addClass('icon');
+        $("#currently").append(currentIcon);
+
         //get current temp
         var currently = $("<h1>").html (" " + Math.round (data.currently.temperature) + "&deg;C");
         //add it to body
         $("#currently").append(currently);
-
-        //get apparent temperature
-        var apparentTemperature = $("<p>").html("Feels like: " + Math.round (data.currently.apparentTemperature) + "&deg;C");
-        $("#currently").append(apparentTemperature);
+        
 
         //loop through the data and add it the table
         //new row for each new item
@@ -144,39 +109,115 @@ function getWeatherData(currentLocation) {
         for (var i = 0; i < data.daily.data.length; i++) {
             var f = data.daily.data[i]; // the data for one day in the forecast
 
-            console.log(f);
+            console.log('in daily forecast. Length: ' + data.daily.data.length);
 
             var row = $("<tr>");
             var date = new Date(f.time * 1000);
             
-            //icon summary
-            row.append("<td>" + f.summary + "</td>");
+            //create image using function 
+            var icon = '<img src="' + returnIcon(f.icon) + '">';
+            //now add that image
+            row.append("<td>" + icon + "</td>")
             
-            // date
-            row.append("<td>" + date.toDateString() + "</td>");
-
-            //high
-            row.append("<td class='temp'>" + Math.round(f.temperatureMax) + "&deg;C</td>");
-
-            //low
+            //date
+            row.append("<td>" + moment(date).format('dddd, Do MMMM') + "</td>");
+            
+            //low temperature
             row.append("<td class='temp'>" + Math.round(f.temperatureMin) + "&deg;C</td>");
+
+            //high temperature
+            row.append("<td class='temp'>" + Math.round(f.temperatureMax) + "&deg;C</td>");
 
             //summary
             row.append("<td>" + f.summary + "</td>");
-            
 
             //wind
             row.append("<td>" + Math.round(f.windSpeed *3.6) + "km/h </td>")
 
-            //rain
+            //chance of rain
             row.append("<td class='temp'>" + Math.round(f.precipProbability *100) + "%</td>");
 
+            //append the tr info to the table
+            $("#daily-forecast-table").append(row);
+
+        } // close loop
+
+
+        //hourly forecast
+        for (var i = 0; i < data.hourly.data.length; i++) {
+            var f = data.hourly.data[i]; // the data for one hour in the forecast
+
+            console.log('in hourly forecast. Length: ' + data.hourly.data.length);
+            
+            var row = $("<tr>");
+            var date = new Date(f.time * 1000);
+            
+            //create image using function
+            var icon = '<img src="' + returnIcon(f.icon) + '">';
+            row.append("<td>" + icon + "</td>")
+
+            // date
+            row.append("<td>" + moment(date).format('h:mm a') + "</td>");
+
+            //temperature
+            row.append("<td class='temp'>" + Math.round(f.temperature) + "&deg;C </td>");
+
+            //summary
+            row.append("<td>" + f.summary + "</td>");
+
+            //feels like temperature 
+            row.append("<td>" + Math.round(f.apparentTemperature) + "&deg;C </td>")
+
+            //wind
+            row.append("<td>" + Math.round(f.windSpeed *3.6) +"km/h </td>")
+
+            //chance of rain
+            row.append("<td>" + Math.round(f.precipProbability *100) + "% </td>")
 
             //append the tr info to the table
-            $("#forecast").append(row);
+            $("#hourly-forecast-table").append(row);      
 
         } // close loop
 
 
     }); //close getJSON
+}
+
+
+//function to run in order to return icon image
+function returnIcon(icon) {
+
+    //setup icons
+    // find icon files
+    var sunIcon = 'images/sun.svg';
+    var moonIcon = 'images/Moon.svg';
+    var cloudSunIcon = 'images/Cloud-Sun.svg';
+    var cloudMoonIcon = 'images/Cloud-Moon.svg';
+    var cloudyIcon = 'images/Cloud.svg';
+    var rainIcon = 'images/Cloud-Rain.svg';
+    var snowIcon = 'images/Cloud-Snow.svg';
+    var sleetIcon = 'images/Cloud-Hail.svg';
+    var windIcon = 'images/Cloud-Wind.svg';
+    var fogIcon = 'images/Cloud-Fog.svg';
+
+    //if statement 
+    if (icon === 'clear-day') {
+        iconImage = sunIcon;
+    } else if (icon === 'cloudy') {
+        iconImage = cloudyIcon;
+    } else if (icon === 'rain') {
+        iconImage = rainIcon;
+    } else if (icon === 'clear-night') {
+        iconImage = moonIcon;
+    } else if (icon === 'partly-cloudy-night') {
+        iconImage = cloudMoonIcon;
+    } else if (icon === 'partly-cloudy-day') {
+        iconImage = cloudSunIcon;
+    } else if (icon === 'snow') {
+        iconImage = coldIcon;
+    } else if (icon === 'wind') {
+        iconImage = windyIcon;
+    }
+
+    return iconImage;
 }

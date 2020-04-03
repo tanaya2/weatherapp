@@ -2,40 +2,88 @@
  
 <html> 
     <head>
-    <link rel="stylesheet" type="text/css" href="styles.css">
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="script.js"></script>
-        
-     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-     <link rel="icon" type="image/png" href="assets/images/suncloud.png">
+    <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
     <title>Weather App</title>
 
-</head>
-    
-<body>
-<div class="icons"></div>
-    
-    <div id="currently"></div>
-    <div>
-        
-        <table id="forecast">
-            <tr>
-                <th></th>
-                <th>DATE</th>
-                <th>HIGH</th>
-                <th>LOW</th>
-                <th>SUMMARY</th>
-                <th>WIND</th>
-                <th>RAIN CHANCE</th>
-            </tr>
-        </table>
-    </div>
-    
-    
+    <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Gadget:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+    <!-- JS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+       
+        <div class="row">
+            <div class="current-forecast six columns offset-by-three columns">  
+                 <div id="currently"></div> 
+            </div> 
+
+                
+        <div class="row">
+            <div class="daily-forecast twelve columns">
+                <h5>Daily Forecast</h5>
+                    <table id="daily-forecast-table" class="u-full-width">
+                        <thead>
+                            <tr>
+                                <th>Icon</th>
+                                <th>Date</th>
+                                <th>Low</th>
+                                <th>High</th>
+                                <th>Summary</th>
+                                <th>Wind</th>
+                                <th>Rain Chance</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="hourly-forecast twelve columns" class="u-full-width">
+                <h5>48 Hour Forecast</h5>
+                    <table id="hourly-forecast-table">
+                        <thead>
+                            <tr>
+                                <th>Icon</th>
+                                <th>Time</th>
+                                <th>Temperature</th>
+                                <th>Summary</th>
+                                <th>Feels Like</th>
+                                <th>Wind</th>
+                                <th>Rain Chance</th>
+
+                            </tr>
+                        </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+                
 </body>
-    
 </html>
